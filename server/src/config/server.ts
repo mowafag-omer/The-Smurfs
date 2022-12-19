@@ -20,10 +20,20 @@ class Server {
       });
   }
 
+  middlewares(middlewares: any) {
+    for (const key in middlewares) {
+      this.app.use(middlewares[key]);
+    }
+  }
+
   routes(routes: any) {
     for (const path in routes) {
-      this.app.use(path, routes[path]);
+      this.app.use(`${path}`, routes[path]);
     }
+  }
+
+  errorHandler(errorHandler: any) {
+    this.app.use(errorHandler);
   }
 
   start(port: number | string) {

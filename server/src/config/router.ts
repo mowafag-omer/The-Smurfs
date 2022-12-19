@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express"
+import { userRouter } from "../modules/user"
 
 const rootRouter: Router= Router()
 
@@ -7,7 +8,8 @@ rootRouter.get("/", (_: Request, res: Response) => {
 })
 
 const routes = {
-  '/': rootRouter
+  '/': rootRouter,
+  '/user': userRouter
 }
 
 export default routes;
