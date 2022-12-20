@@ -2,9 +2,6 @@ import jwt from "jsonwebtoken";
 import config from "../config/constants";
 
 export function generateToken(userData: object) {
-  console.log('====================================');
-  console.log(userData);
-  console.log('====================================');
   return jwt.sign(
     userData,
     config.JWT_SECRET,
