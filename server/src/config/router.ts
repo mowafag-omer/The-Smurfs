@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express"
 import { userRouter } from "../modules/user"
+import { friendshipRouter } from "../modules/friendship"
 
 const rootRouter: Router= Router()
 
@@ -9,7 +10,8 @@ rootRouter.get("/", (_: Request, res: Response) => {
 
 const routes = {
   '/': rootRouter,
-  '/user': userRouter
+  '/user': userRouter,
+  '/friendship': friendshipRouter
 }
 
 export default routes;

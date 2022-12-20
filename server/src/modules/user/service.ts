@@ -2,12 +2,14 @@ import { IUser } from "./model";
 import { Model } from 'mongoose'
 import bcrypt from "bcrypt";
 import { generateToken } from "../../helpers/jwt";
+import filterUsersData from "../../helpers/filterUsersData";
 
 
 export interface IUserService {
   user: Model<IUser>
   register(params: IUser): Promise<any>
   login(params: { userName: string, password: string }): Promise<any>
+  getUsers(): Promise<any>
   modifyRole(params: { _id: string, role: string }): Promise<any>
 }
 
@@ -34,7 +36,12 @@ export default class UserService implements IUserService {
     })
 
     return { success: true, token }
- }
+  }
+
+  async getUsers() {
+    const users = await this.user.find()
+    return filterUsersData(users) 
+  }
 
   async login(params: { userName: string, password: string }) {
     const { userName, password } = params
