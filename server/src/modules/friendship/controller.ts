@@ -49,9 +49,8 @@ export default class FriendshipController implements IFriendshipController {
 
   async unfriend(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.friendshipService.unfriend(req.body)
-      if (!result.success) throw new ApiError(400, result.message)
-      res.status(200).json({ payload: result.deleted })
+      await this.friendshipService.unfriend(req.body)
+      res.status(201).json()
     } catch (error) {
       next(error)
     }

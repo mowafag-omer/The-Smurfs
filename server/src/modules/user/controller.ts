@@ -21,8 +21,7 @@ export default class UserController implements IUserController {
     try {
       const result = await this.userService.register(req.body)
       if (!result.success) throw new ApiError(409, result.message)
-      res.header('Authorization', 'Bearer '+ result.token)
-      res.status(200).json()
+      res.status(201).json()
     } catch (error) {
       next(error)
     }
@@ -32,8 +31,7 @@ export default class UserController implements IUserController {
     try {
       const result = await this.userService.login(req.body)
       if (!result.success) throw new ApiError(401, result?.message)
-      res.header('Authorization', 'Bearer '+ result.token)
-      res.status(201).json()
+      res.status(201).json({token: result.token})
     } catch (error) {
       next(error)
     }
@@ -42,7 +40,7 @@ export default class UserController implements IUserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.userService.getUsers()
-      res.status(200).json({ payload: result })
+      res.status(200).json(result)
     } catch (error) {
       next(error)
     }

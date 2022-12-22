@@ -7,7 +7,7 @@ const middlewares = {
   cors: cors({
     origin:'*', 
     credentials: true, 
-    exposedHeaders: 'Authorization'
+    exposedHeaders: '*'
   }),
 }
 

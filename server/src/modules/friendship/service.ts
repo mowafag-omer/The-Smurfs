@@ -4,9 +4,9 @@ import { Model } from 'mongoose'
 export interface IFriendshipService {
   friendship: Model<IFriendship>
   sendRequest(params: IFriendship): Promise<any>
-  acceptFriendship(params: {_id: string, secondUser: string}): Promise<any>
+  acceptFriendship(params: { firstUser: string, secondUser: string }): Promise<any>
   getFriendShipsById(id: string): Promise<any>
-  unfriend(params: {_id: string}): Promise<any>
+  unfriend(params: { firstUser: string, secondUser: string }): Promise<any>
 }
 
 export default class FriendshipService implements IFriendshipService {
@@ -27,9 +27,9 @@ export default class FriendshipService implements IFriendshipService {
     return { success: true, friendshipReq }
   }
 
-  async acceptFriendship(params: {_id: string, secondUser: string}) {
-    const { _id, secondUser } = params
-    const existedFriendship = await this.friendship.findOne({_id, secondUser})
+  async acceptFriendship(params: { firstUser: string, secondUser: string }) {
+    const {firstUser, secondUser } = params
+    const existedFriendship = await this.friendship.findOne({firstUser, secondUser})
     if (!existedFriendship) return { success: false, message: "Bad request"}
     existedFriendship.status = "accepted"
     const updatedFriendship = await existedFriendship.save()
@@ -47,11 +47,10 @@ export default class FriendshipService implements IFriendshipService {
       : { friendships }
   }
 
-  async unfriend(params: {_id: string}) {
-    const existedFriendship = await this.friendship.findOne({_id: params._id})
-    if (!existedFriendship) return { success: false, message: "Bad request"}
-    existedFriendship.status = "deleted"
-    const deleted = await existedFriendship.save()
-    return { success: true, deleted }
+  async unfriend(params: { firstUser: string, secondUser: string }) {
+    const { firstUser, secondUser } = params
+    await this.friendship.deleteOne({firstUser: firstUser, secondUser: secondUser})
+    await this.friendship.deleteOne({firstUser: secondUser, secondUser: firstUser})
+    return { success: true }
   }
 }

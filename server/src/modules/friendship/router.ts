@@ -1,9 +1,10 @@
 import { Router } from "express";
+import checkAuth from "../../middlewares/checkAuth";
 import { controller } from ".";
 
 const friendshipRouter: Router = Router()
 
-friendshipRouter.post("/sendFriendRequest", (req, res, next) => 
+friendshipRouter.post("/sendFriendRequest", checkAuth, (req, res, next) => 
   controller.sendRequest(req, res, next)
 )
 
