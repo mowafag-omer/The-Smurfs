@@ -82,9 +82,13 @@ export class UsersComponent implements OnInit, DoCheck {
 
   getAddedFriend(users: userType[], friendsList: friendshipsType[]) {
     if (!!users && !!friendsList) {
-      users.forEach((user: any, index: number) => {
+      users.forEach((user: any) => {
         friendsList.forEach((friend: any) => {
-          user._id == friend.secondUser && (user.added = true)
+          user._id == friend.secondUser && (user.added = true);
+          user._id == friend.firstUser && (user.isFriend = true);
+          (user._id == friend.secondUser || user._id == friend.firstUser) &&
+            friend.status == 'accepted' &&
+            (user.isFriend = true);
         });
       });
     }
